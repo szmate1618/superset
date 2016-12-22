@@ -31,6 +31,9 @@ Gallery
 .. image:: _static/img/viz_thumbnails/date_filter_slider.png
    :scale: 25 %
 
+.. image:: _static/img/viz_thumbnails/date_filter_picker.png
+   :scale: 25 %
+
 .. image:: _static/img/viz_thumbnails/pivot_table.png
    :scale: 25 %
 

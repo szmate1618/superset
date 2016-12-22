@@ -10,6 +10,7 @@ const vizMap = {
   cal_heatmap: require('./cal_heatmap.js'),
   compare: require('./nvd3_vis.js'),
   date_filter_slider: require('./date_filter_slider.jsx'),
+  date_filter_picker: require('./date_filter_picker.jsx'),
   directed_force: require('./directed_force.js'),
   dist_bar: require('./nvd3_vis.js'),
   filter_box: require('./filter_box.jsx'),
