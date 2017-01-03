@@ -86,6 +86,8 @@ function nvd3Vis(slice) {
 
       let width = slice.width();
       const fd = payload.form_data;
+      console.log(fd);
+      console.log();
 
       const barchartWidth = function () {
         let bars;
@@ -125,6 +127,8 @@ function nvd3Vis(slice) {
             chart.xAxis
             .showMaxMin(fd.x_axis_showminmax)
             .staggerLabels(false);
+            if (!window.charts) { window.charts = []; }
+            window.charts.push(chart);
             break;
 
           case 'bar':
