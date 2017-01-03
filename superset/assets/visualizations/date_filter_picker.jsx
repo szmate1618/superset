@@ -31,48 +31,36 @@ class DateFilterPicker extends React.Component {
       selectedValues: props.origSelectedValues,
     };
   }
-  /*changeFilter(filter, options) {
-    let vals = null;
-    if (options) {
-      if (Array.isArray(options)) {
-        vals = options.map((opt) => opt.value);
-      } else {
-        vals = options.value;
-      }
+  handleValueChange(event) {
+    let date_value = event.target.value;
+    
+   /* const selectedValues = Object.assign({}, this.state.selectedValues);
+    selectedValues['__from'] = date_value;
+    selectedValues['__to'] = date_value;*/
+    
+    let oneweek = 604800000;
+    for (var i = 0; i < window.charts.length; i++) {
+      console.log(window.charts[i]);
+      window.charts[i].brushExtent([new Date(date_value).getTime() - oneweek, new Date(date_value).getTime() + oneweek]);
+      window.charts[i].update();
     }
-    const selectedValues = Object.assign({}, this.state.selectedValues);
-    selectedValues[filter] = vals;
-    this.setState({ selectedValues });
-    this.props.onChange(filter, vals);
-  }*/
-  handleValuesChange(event) {
-    let num_value = Number(event.target.value);
-    let from_value = num_value + 20 + ' years ago'
-    let to_value = num_value + ' years ago'
-    
-    const selectedValues = Object.assign({}, this.state.selectedValues);
-    selectedValues['__from'] = from_value;
-    selectedValues['__to'] = to_value;
-    
-    this.setState({ selectedValues });
+    /*this.setState({ selectedValues });
     console.log(selectedValues);
     console.log(this.state.selectedValues);
-    this.props.onChange('__from', from_value);
-    this.props.onChange('__to', to_value);
+    this.props.onChange('__from', date_value);
+    this.props.onChange('__to', date_value);
     console.log(selectedValues);
-    console.log(this.state.selectedValues);
+    console.log(this.state.selectedValues);*/
   }
   render() {
     return (
       <div>
           <div className="m-b-5">
               <input
-                ref="range"
-                type="range"
-                min="0"
-                max="100"
-                defaultValue="0"
-                onChange={this.handleValuesChange.bind(this)}
+                ref="date"
+                type="date"
+                name="target_date"
+                onChange={this.handleValueChange.bind(this)}
               />
           </div>
       </div>
