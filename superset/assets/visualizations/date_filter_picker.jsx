@@ -27,32 +27,30 @@ const defaultProps = {
 class DateFilterPicker extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedValues: props.origSelectedValues,
-    };
+    this.state = { day: new Date().toISOString().slice(0,10) };
   }
   handleValueChange(event) {
     let date_value = event.target.value;
     
-   /* const selectedValues = Object.assign({}, this.state.selectedValues);
-    selectedValues['__from'] = date_value;
-    selectedValues['__to'] = date_value;*/
-    
     let oneweek = 604800000;
     for (var i = 0; i < window.charts.length; i++) {
       console.log(window.charts[i]);
-      window.charts[i].brushExtent([new Date(date_value).getTime() - oneweek, new Date(date_value).getTime() + oneweek]);
+      window.charts[i].brushExtent([new Date(date_value).getTime() - 3 * oneweek, new Date(date_value).getTime() + 3 * oneweek]);
       window.charts[i].update();
     }
-    /*this.setState({ selectedValues });
-    console.log(selectedValues);
-    console.log(this.state.selectedValues);
-    this.props.onChange('__from', date_value);
+
+    console.log(date_value);
+    this.setState({day: date_value});
+    this.props.onChange('__from', date_value + ' yesterday'); // surprisingly, this works
     this.props.onChange('__to', date_value);
-    console.log(selectedValues);
-    console.log(this.state.selectedValues);*/
+    window.__from = new Date(date_value).getTime() - 5 * oneweek;
+    window.__to = new Date(date_value).getTime() + 5 * oneweek;
   }
   render() {
+    let today = new Date(); 
+    let yyyy = today.getFullYear();
+    let dd = today.getDate();
+    let mm = today.getMonth()+1; //January is 0!
     return (
       <div>
           <div className="m-b-5">
@@ -60,6 +58,7 @@ class DateFilterPicker extends React.Component {
                 ref="date"
                 type="date"
                 name="target_date"
+                value= { this.state.day }
                 onChange={this.handleValueChange.bind(this)}
               />
           </div>
