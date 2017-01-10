@@ -129,6 +129,7 @@ function nvd3Vis(slice) {
             .staggerLabels(false);
             if (!window.charts) { window.charts = []; }
             window.charts.push(chart);
+            if (window.__from && window.__to) { chart.brushExtent([window.__from, window.__to]); }
             break;
 
           case 'bar':
