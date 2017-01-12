@@ -1753,6 +1753,56 @@ class FilterBoxViz(BaseViz):
         return d
 
 
+class FilterBoxSingleViz(BaseViz):
+
+    """Lynx Analytics single-select filter box"""
+
+    viz_type = "filter_box_single"
+    verbose_name = _("Filters Single")
+    is_timeseries = False
+    credits = 'a <a href="https://github.com/airbnb/superset">Superset</a> original'
+    fieldsets = ({
+        'label': None,
+        'fields': (
+            ('date_filter', None),
+            'groupby',
+            'metric',
+        )
+    },)
+    form_overrides = {
+        'groupby': {
+            'label': _('Filter fields'),
+            'description': _("The fields you want to filter on"),
+            'default': [],
+        },
+    }
+
+    def query_obj(self):
+        qry = super(FilterBoxSingleViz, self).query_obj()
+        groupby = self.form_data.get('groupby')
+        if len(groupby) < 1 and not self.form_data.get('date_filter'):
+            raise Exception("Pick at least one filter field")
+        qry['metrics'] = [
+            self.form_data['metric']]
+        return qry
+
+    def get_data(self):
+        qry = self.query_obj()
+        filters = [g for g in self.form_data['groupby']]
+        d = {}
+        for flt in filters:
+            qry['groupby'] = [flt]
+            df = super(FilterBoxSingleViz, self).get_df(qry)
+            d[flt] = [{
+                'id': row[0],
+                'text': row[0],
+                'filter': flt,
+                'metric': row[1]}
+                for row in df.itertuples(index=False)
+            ]
+        return d
+
+
 class DateFilterSliderViz(BaseViz):
 
     """Lynx Analytics date filter slider"""
@@ -2181,6 +2231,7 @@ viz_types_list = [
     SankeyViz,
     WorldMapViz,
     FilterBoxViz,
+    FilterBoxSingleViz,
     DateFilterSliderViz,
     DateFilterPickerViz,
     IFrameViz,
