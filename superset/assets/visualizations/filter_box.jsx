@@ -125,6 +125,10 @@ function filterBox(slice) {
       payload.form_data.groupby.forEach((f) => {
         filtersChoices[f] = payload.data[f];
       });
+      window.hack = slice;
+      let column = payload.form_data.groupby[0];
+      // This is used to trigger a refresh event on the other filters.
+      slice.setFilter("__to", "now");
       ReactDOM.render(
         <FilterBox
           filtersChoices={filtersChoices}

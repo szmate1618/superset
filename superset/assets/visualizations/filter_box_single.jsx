@@ -126,17 +126,12 @@ function filterBoxSingle(slice) {
         filtersChoices[f] = payload.data[f];
       });
       // Specifying the default option
-      window.payload = payload;
-      window.slice = slice;
       let sliceFilters = slice.getFilters();
       let column = payload.form_data.groupby[0];
-      if (!sliceFilters) { 
+      if (!sliceFilters || $.inArray(sliceFilters[column][0], filtersChoices[column].map(choice=>choice.id)) === -1) { 
           sliceFilters = {};
-          sliceFilters[column] = ["ALL"];
+          slice.setFilter(column, ["ALL"]);
       }
-      console.log();
-      console.log("choices");
-      console.log(filtersChoices);
       ReactDOM.render(
         <FilterBoxSingle
           filtersChoices={filtersChoices}
